@@ -1,0 +1,11 @@
+---
+- name: curl rvm
+  get_url: url=https://get.rvm.io dest=/tmp/rvm.sh
+- name: install rvm and ruby
+  command: bash /tmp/rvm.sh stable
+- name: install ruby {{ ruby_ver | default('2.1.1') }}
+  command: /home/{{ username }}/.rvm/bin/rvm install {{ ruby_ver | default('2.1.1') }}
+  when: username is defined
+- name: rvm use {{ ruby_ver | default('2.1.1') }}
+  command: /home/{{ username }}/.rvm/bin/rvm use --default {{ ruby_ver | default('2.1.1') }}
+  when: username is defined

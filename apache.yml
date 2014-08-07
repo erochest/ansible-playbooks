@@ -1,0 +1,13 @@
+---
+- name: uninstall apache2
+  apt: pkg=apache2 state=absent
+  sudo: true
+- name: add apache2 apt repository
+  apt_repository: repo=ppa:ondrej/apache2 update_cache=yes
+  sudo: true
+- name: install latest apache2
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - apache2
+    - libapache2-mod-php5
+  sudo: true

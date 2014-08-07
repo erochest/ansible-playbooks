@@ -1,0 +1,57 @@
+---
+- name: install tomcat7
+  apt: pkg={{ item }} state=latest
+  sudo: true
+  with_items:
+    - tomcat7
+    - tomcat7-admin
+- name: solr downloaded?
+  command: /usr/bin/test -e /tmp/solr-4.7.2.tgz
+  register: solr_downloaded
+  ignore_errors: True
+- name: download solr
+  get_url: >
+    url=http://archive.apache.org/dist/lucene/solr/4.7.2/solr-4.7.2.tgz
+    dest=/tmp/
+  when: solr_downloaded|failed
+- name: untar solr
+  command: tar xfz solr-4.7.2.tgz
+  args:
+    chdir: /tmp
+- name: solr shared
+  command: /usr/bin/test -e /usr/share/solr
+  register: solr_shared
+  ignore_errors: True
+- name: mv solr
+  command: mv /tmp/solr-4.7.2 /usr/share/solr
+  when: solr_shared|failed
+  sudo: true
+- name: cp solr.war
+  command: cp webapps/solr.war multicore/solr.war
+  args:
+    chdir: /usr/share/solr/example
+  sudo: true
+- name: cp solr/*/lib/ext
+  shell: cp solr/example/lib/ext/*.jar tomcat7/lib
+  args:
+    chdir: /usr/share
+  sudo: true
+- name: cp log4j.properties
+  command: cp -r solr/example/resources/log4j.properties tomcat7/lib/
+  args:
+    chdir: /usr/share
+  sudo: true
+- name: edit log4j.properties
+  lineinfile: dest=/usr/share/tomcat7/lib/log4j.properties regexp=^solr.log= line=solr.log=/usr/share/solr
+  sudo: true
+- name: solr.xml
+  copy: src=files/solr.xml dest=/etc/tomcat7/Catalina/localhost/solr.xml
+  sudo: true
+- name: tomcat-users.xml
+  script: scripts/tomcat_users.py /etc/tomcat7/tomcat-users.xml
+  sudo: true
+- name: chown solr
+  file: owner=tomcat7 path=/usr/share/solr/example/multicore recurse=yes
+  sudo: true
+- service: name=tomcat7 state=restarted
+  sudo: true

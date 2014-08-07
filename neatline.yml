@@ -1,0 +1,13 @@
+---
+- include: node.yml
+- include: php.yml
+- name: install js dependencies
+  npm: path=/var/www/omeka/plugins/Neatline
+- name: install js packages
+  shell: bower install chdir=/var/www/omeka/plugins/Neatline
+- name: install composer
+  shell: curl -sS https://getcomposer.org/installer | php
+         chdir=/var/www/omeka/plugins/Neatline
+         creates=/var/www/omeka/plugins/Neatline/composer.phar
+- name: install php dependencies
+  shell: php composer.phar install chdir=/var/www/omeka/plugins/Neatline

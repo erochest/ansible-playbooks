@@ -1,0 +1,16 @@
+---
+- name: add docker key
+  apt_key: >
+    keyserver=keyserver.ubuntu.com
+    id=0xd8576a8ba88d21e9
+    state=present
+  sudo: true
+- name: add docker repository
+  apt_repository: repo='deb https://get.docker.io/ubuntu docker main' state=present update_cache=yes
+  sudo: true
+- name: install lxc-docker
+  apt: name=lxc-docker state=present
+  sudo: true
+- name: add user to docker group
+  user: append=yes groups=docker name={{ username }}
+  sudo: true
