@@ -1,0 +1,12 @@
+---
+- hosts: all
+  tasks:
+    - name: install MySQLdb
+      apt: pkg=python-mysqldb state=latest
+      sudo: true
+    - name: install tasksel
+      apt: pkg=tasksel state=latest
+      sudo: true
+    - name: install lamp
+      apt: pkg=lamp-server^ state=latest
+      sudo: true
