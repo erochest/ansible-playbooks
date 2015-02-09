@@ -8,5 +8,5 @@
       apt: pkg=tasksel state=latest
       sudo: true
     - name: install lamp
-      apt: pkg=lamp-server^ state=latest
+      shell: apt-get install lamp-server^
       sudo: true
