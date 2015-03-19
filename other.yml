@@ -1,10 +1,12 @@
 ---
-- name: install dependencies
-  sudo: true
-  apt: pkg={{ item }}
-  with_items:
-    - libxslt-dev
-    - libwebkit-dev
-    - libqtwebkit-dev
-    - qt4-qmake
-    - xvfb
+- hosts: all
+  tasks:
+    - name: install dependencies
+      sudo: true
+      apt: pkg={{ item }}
+      with_items:
+        - libxslt-dev
+        - libwebkit-dev
+        - libqtwebkit-dev
+        - qt4-qmake
+        - xvfb

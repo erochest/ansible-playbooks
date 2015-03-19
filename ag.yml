@@ -1,17 +1,19 @@
 ---
-- name: install build utils
-  apt: pkg={{ item }} state=latest
-  sudo: true
-  with_items:
-    - automake
-    - pkg-config
-    - libpcre3-dev
-    - zlib1g-dev
-    - liblzma-dev
-- name: clone ag
-  git: repo=https://github.com/ggreer/the_silver_searcher.git dest=/tmp/ag
-- name: build ag
-  shell: ./build.sh chdir=/tmp/ag
-- name: install ag
-  shell: make install chdir=/tmp/ag
-  sudo: true
+- hosts: all
+  tasks:
+    - name: install build utils
+      apt: pkg={{ item }} state=latest
+      sudo: true
+      with_items:
+        - automake
+        - pkg-config
+        - libpcre3-dev
+        - zlib1g-dev
+        - liblzma-dev
+    - name: clone ag
+      git: repo=https://github.com/ggreer/the_silver_searcher.git dest=/tmp/ag
+    - name: build ag
+      shell: ./build.sh chdir=/tmp/ag
+    - name: install ag
+      shell: make install chdir=/tmp/ag
+      sudo: true
