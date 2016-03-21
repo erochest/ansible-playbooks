@@ -3,7 +3,7 @@
   tasks:
     - name: install build utils
       apt: pkg={{ item }} state=latest
-      sudo: true
+      become: true
       with_items:
         - automake
         - pkg-config
@@ -16,4 +16,4 @@
       shell: ./build.sh chdir=/tmp/ag
     - name: install ag
       shell: make install chdir=/tmp/ag
-      sudo: true
+      become: true

@@ -3,10 +3,10 @@
   tasks:
     - name: install MySQLdb
       apt: pkg=python-mysqldb state=latest
-      sudo: true
+      become: true
     - name: install tasksel
       apt: pkg=tasksel state=latest
-      sudo: true
+      become: true
     - name: install lamp
       shell: apt-get install lamp-server^
-      sudo: true
+      become: true

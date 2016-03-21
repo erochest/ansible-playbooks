@@ -3,7 +3,7 @@
   tasks:
     - name: install software-properties-common
       apt: pkg={{ item }} state=latest
-      sudo: true
+      become: true
       with_items:
         - automake
         - pkg-config
@@ -15,10 +15,10 @@
         - software-properties-common
     - name: add ppa:chris-lea/node.js
       apt_repository: repo='ppa:chris-lea/node.js' update_cache=yes
-      sudo: true
+      become: true
     - name: install node
       apt: pkg={{ item }} state=latest
-      sudo: true
+      become: true
       with_items:
         - python-software-properties
         - python
@@ -28,7 +28,7 @@
         - phantomjs
     - name: install js tools
       npm: name={{ item }} global=yes
-      sudo: true
+      become: true
       with_items:
         - grunt-cli
         - bower

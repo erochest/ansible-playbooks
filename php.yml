@@ -1,6 +1,6 @@
 ---
 - name: install phptools
   apt: pkg={{ item }} state=latest
-  sudo: true
+  become: true
   with_items:
     - php5-xdebug

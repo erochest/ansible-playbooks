@@ -3,7 +3,7 @@
   tasks:
     - name: install tomcat7
       apt: pkg={{ item }} state=latest
-      sudo: true
+      become: true
       with_items:
         - tomcat7
         - tomcat7-admin
@@ -27,35 +27,35 @@
     - name: mv solr
       command: mv /tmp/solr-{{ solr_ver | default('4.7.2') }} /usr/share/solr
       when: solr_shared|failed
-      sudo: true
+      become: true
     - name: cp solr.war
       command: cp webapps/solr.war multicore/solr.war
       args:
         chdir: /usr/share/solr/example
-      sudo: true
+      become: true
     - name: cp solr/*/lib/ext
       shell: cp solr/example/lib/ext/*.jar tomcat7/lib
       args:
         chdir: /usr/share
-      sudo: true
+      become: true
     - name: cp log4j.properties
       command: cp -r solr/example/resources/log4j.properties tomcat7/lib/
       args:
         chdir: /usr/share
-      sudo: true
+      become: true
     - name: edit log4j.properties
       lineinfile: dest=/usr/share/tomcat7/lib/log4j.properties regexp=^solr.log= line=solr.log=/usr/share/solr
-      sudo: true
+      become: true
     - name: solr.xml
       copy: >
         src=files/solr.xml
         dest=/etc/tomcat7/Catalina/localhost/solr.xml
-      sudo: true
+      become: true
     - name: tomcat-users.xml
       script: scripts/tomcat_users.py /etc/tomcat7/tomcat-users.xml tomcat tomcat
-      sudo: true
+      become: true
     - name: chown solr
       file: owner=tomcat7 path=/usr/share/solr/example/multicore recurse=yes
-      sudo: true
+      become: true
     - service: name=tomcat7 state=restarted
-      sudo: true
+      become: true

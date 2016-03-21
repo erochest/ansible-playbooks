@@ -2,7 +2,7 @@
 - hosts: all
   tasks:
     - name: install dependencies
-      sudo: true
+      become: true
       apt: pkg={{ item }}
       with_items:
         - libxslt-dev
