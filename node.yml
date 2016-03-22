@@ -1,36 +1,18 @@
 ---
 - hosts: all
   tasks:
-    - name: install software-properties-common
-      apt: pkg={{ item }} state=latest
-      become: true
-      with_items:
-        - automake
-        - pkg-config
-        - libpcre3-dev
-        - zlib1g-dev
-        - liblzma-dev
-        - python-apt
-        - python-pycurl
-        - software-properties-common
-    - name: add ppa:chris-lea/node.js
-      apt_repository: repo='ppa:chris-lea/node.js' update_cache=yes
-      become: true
     - name: install node
       apt: pkg={{ item }} state=latest
       become: true
       with_items:
-        - python-software-properties
-        - python
-        - g++
-        - make
         - nodejs
         - phantomjs
+        - npm
     - name: install js tools
       npm: name={{ item }} global=yes
       become: true
       with_items:
         - grunt-cli
         - bower
-        - yo
+        # - yo
         - coffee-script
