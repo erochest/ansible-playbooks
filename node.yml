@@ -1,18 +1,25 @@
 ---
 - hosts: all
   tasks:
+    - name: download node installation script
+      get_url: >
+        url=https://deb.nodesource.com/setup_5.x
+        dest=/tmp/setup_5.x
+        mode=0777
+    - name: set up node installation
+      command: ./setup_5.x chdir=/tmp
+      become: true
     - name: install node
       apt: pkg={{ item }} state=latest
       become: true
       with_items:
         - nodejs
         - phantomjs
-        - npm
     - name: install js tools
       npm: name={{ item }} global=yes
       become: true
       with_items:
         - grunt-cli
         - bower
-        # - yo
+        - yo
         - coffee-script
