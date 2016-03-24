@@ -21,5 +21,5 @@
       with_items:
         - grunt-cli
         - bower
-        - yo
+        # - yo
         - coffee-script
